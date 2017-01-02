@@ -4,6 +4,10 @@
     <title>Lightbox App</title>
 </head>
 <body>
-    {{ resp }}
+    {% for image in images %}
+    <div>
+        <a href="{{ image.url }}">{{ image.title }}</a>
+    </div>
+    {% endfor %}
 </body>
 </html>
