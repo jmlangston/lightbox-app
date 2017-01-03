@@ -1,0 +1,14 @@
+.thumbnail {
+    display: inline-block;
+}
+
+#modal {
+    display: none;
+    background-color: black;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    /*index: 1;  */
+}

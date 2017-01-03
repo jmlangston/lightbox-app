@@ -2,7 +2,7 @@ from flask import Flask, render_template
 import os
 import requests
 
-from model import Image
+from model import Photo
 
 # create instance of the Flask class
 app = Flask(__name__)
@@ -24,9 +24,9 @@ url_params = {
 @app.route("/")
 def render_grid_view():
     api_resp = call_api()
-    images = handle_response(api_resp)
+    photos = handle_response(api_resp)
 
-    return render_template("grid_view.html", images=images)
+    return render_template("grid_view.html", photos=photos)
 
 def call_api():
     resp = requests.get(base_url, url_params)
@@ -34,26 +34,28 @@ def call_api():
     return resp
 
 def handle_response(resp):
-    list_photos = resp["photoset"]["photo"]
+    resp_photos = resp["photoset"]["photo"]
 
-    list_image_instances = []
+    list_photo_instances = []
 
-    for photo in list_photos:
+    for photo in resp_photos:
         flickr_id = photo["id"]
         secret = photo["secret"]
         server_id = photo["server"]
         farm_id = photo["farm"]
         title = photo["title"]
 
-        # construct image URL
-        # https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
-        url = "https://farm%s.staticflickr.com/%s/%s_%s.jpg" % (farm_id, server_id, flickr_id, secret)
+        # construct image URLs
+        # https://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}_{size}.jpg
+        url_thumbnail = "https://farm%s.staticflickr.com/%s/%s_%s_t.jpg" % (farm_id, server_id, flickr_id, secret)
+        url_fullsize = "https://farm%s.staticflickr.com/%s/%s_%s.jpg" % (farm_id, server_id, flickr_id, secret)
 
-        new_image = Image(url, title)
+        photo_id = resp_photos.index(photo)
+        new_photo = Photo(photo_id, url_thumbnail, url_fullsize, title)
 
-        list_image_instances.append(new_image)
+        list_photo_instances.append(new_photo)
 
-    return list_image_instances
+    return list_photo_instances
 
 
 # run the local server with this Flask app
