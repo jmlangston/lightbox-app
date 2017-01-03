@@ -1,0 +1,33 @@
+<!DOCTYPE <html>
+<html>
+<head>
+    <title>Lightbox App</title>
+    <link rel="stylesheet" type="text/css" href="static/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div id="thumbnailsContainer">
+        {% for photo in photos %}
+        <div class="thumbnail clickable" id="thumbnail{{ photo.photo_id }}">
+            <img src="{{ photo.url_thumbnail }}">
+        </div>
+        {% endfor %}
+    </div>
+
+    <div id="modal">
+        <div id="closeButton"><i class="fa fa-times clickable"></i></div>
+        <div id="slideContainer">
+            {% for photo in photos %}
+            <div class="slide" id="slide{{ photo.photo_id }}">
+                <img src="{{ photo.url_fullsize }}">
+                <p>{{ photo.title }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="arrow" id="leftArrow"><i class="fa fa-arrow-left clickable"></i></div>
+        <div class="arrow" id="rightArrow"><i class="fa fa-arrow-right clickable"></i></div>
+    </div>
+
+    <script src="static/index.js" type="text/javascript"></script>
+</body>
+</html>

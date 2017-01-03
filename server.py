@@ -22,11 +22,11 @@ url_params = {
 }
 
 @app.route("/")
-def render_grid_view():
+def render_index():
     api_resp = call_api()
     photos = handle_response(api_resp)
 
-    return render_template("grid_view.html", photos=photos)
+    return render_template("index.html", photos=photos)
 
 def call_api():
     resp = requests.get(base_url, url_params)

@@ -9,6 +9,9 @@ class LightboxApp {
     constructor() {
         // initialize a modal object
         this.modal = new Modal();
+
+        // total number of photos
+        this.numPhotos = null;
     }
 
     run() {
@@ -27,6 +30,7 @@ class LightboxApp {
 
         // select all thumbnails (divs)
         var photos = document.getElementsByClassName("thumbnail");
+        this.numPhotos = photos.length;
 
         // loop over array of divs, creating new Photo instance for each
         for (var i = 0; i < photos.length; i++) {
@@ -80,7 +84,7 @@ class Photo {
     }
 
     handleThumbnailClick() {
-        this.modal.show();
+        this.modal.showModal();
     }
 
 }
@@ -89,16 +93,43 @@ class Modal {
     constructor() {
         this.modalElement = document.getElementById("modal");
 
-        this.modalElement.addEventListener("click", this.hide.bind(this));
+        // TODO - need to fix because numPhotos is null when Modal is initialized
+        // this.numPhotos = app.numPhotos;
+
+        this.currentPhotoId = null;
+
+        this.setEventListeners();
     }
 
-    show() {
+    setEventListeners() {
+        document.getElementById("closeButton").addEventListener("click", this.hideModal.bind(this));
+        // document.getElementById("rightArrow").addEventListener("click", this.showNextPhoto.bind(this));
+        // document.getElementById("leftArrow").addEventListener("click", this.showLastPhoto.bind(this));
+    }
+
+    showModal() {
         this.modalElement.style.display = "block";
     }
 
-    hide() {
+    hideModal() {
         this.modalElement.style.display = "none";
     }
+
+    // showPhoto(photoId) {
+
+    // }
+
+    // showNextPhoto() {
+    //     showPhoto(this.currentPhotoId + 1);
+    // }
+
+    // showLastPhoto() {
+    //     showPhoto(this.currentPhotoId - 1);
+    // }
+
+    // checkTotalPhotos() {
+
+    // }
 
 }
 
