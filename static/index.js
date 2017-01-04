@@ -9,9 +9,6 @@ class LightboxApp {
     constructor() {
         // initialize a modal object
         this.modal = new Modal();
-
-        // total number of photos
-        this.numPhotos = null;
     }
 
     run() {
@@ -30,7 +27,6 @@ class LightboxApp {
 
         // select all thumbnails (divs)
         var photos = document.getElementsByClassName("thumbnail");
-        this.numPhotos = photos.length;
 
         // loop over array of divs, creating new Photo instance for each
         for (var i = 0; i < photos.length; i++) {
@@ -41,9 +37,6 @@ class LightboxApp {
             var urlThumbnail = imgEl.getAttribute("src");
 
             new Photo(photoTitle, urlThumbnail, thumbnailId);
-
-            // we get the photoId by slicing the number from thumbnail div's id ("thumbnail{#}")
-            // var photoId = thumbnailId.slice(9);
         }
 
     }
@@ -58,6 +51,7 @@ class Photo {
 
         this.photoId = this.getPhotoId();
         this.urlFullsize = this.getUrlFullsize();
+        this.slideId = this.getSlideId();
 
         this.modal = app.modal;
 
@@ -67,11 +61,12 @@ class Photo {
     }
 
     /**
-     * Uses the thumbnail element's id to get the photo's id (a number)
+     * Uses the thumbnail element's id to get the photo's id (an integer)
+     * ex: if thumbnailId is "thumbnail6", this will return photoId of 6
      */
     getPhotoId() {
         var photoId = this.thumbnailId.slice(9);
-        return photoId;
+        return parseInt(photoId);
     }
 
     /**
@@ -83,8 +78,19 @@ class Photo {
         return url;
     }
 
+    /**
+     * Uses the photoId to get/construct the fullsize photo slide element's id
+     */
+    getSlideId() {
+        var slideId = "slide" + this.photoId.toString();
+        return slideId;
+    }
+
     handleThumbnailClick() {
-        this.modal.showModal();
+        this.modal.openModal();
+
+        var slideIndex = this.photoId;
+        this.modal.showPhoto(slideIndex);
     }
 
 }
@@ -92,44 +98,61 @@ class Photo {
 class Modal {
     constructor() {
         this.modalElement = document.getElementById("modal");
-
-        // TODO - need to fix because numPhotos is null when Modal is initialized
-        // this.numPhotos = app.numPhotos;
-
-        this.currentPhotoId = null;
+        this.lastSlideIndex = this.getLastSlideIndex();
+        this.currentSlideIndex = null; // an integer
 
         this.setEventListeners();
     }
 
     setEventListeners() {
-        document.getElementById("closeButton").addEventListener("click", this.hideModal.bind(this));
-        // document.getElementById("rightArrow").addEventListener("click", this.showNextPhoto.bind(this));
-        // document.getElementById("leftArrow").addEventListener("click", this.showLastPhoto.bind(this));
+        document.getElementById("closeButton").addEventListener("click", this.closeModal.bind(this));
+        document.getElementById("rightArrow").addEventListener("click", this.showNextPhoto.bind(this));
+        document.getElementById("leftArrow").addEventListener("click", this.showLastPhoto.bind(this));
     }
 
-    showModal() {
+    openModal() {
         this.modalElement.style.display = "block";
     }
 
-    hideModal() {
+    closeModal() {
         this.modalElement.style.display = "none";
+        document.getElementById("slide" + this.currentSlideIndex.toString()).style.display = "none";
+        this.currentSlideIndex = null;
     }
 
-    // showPhoto(photoId) {
+    showPhoto(slideIndex) {
+        // if there's a slide currently showing, hide it so we can show the next one
+        if ((this.currentSlideIndex != null) && (this.currentSlideIndex > -1)) {
+            document.getElementById("slide" + this.currentSlideIndex.toString()).style.display = "none";
+        }
 
-    // }
+        // update current slide index and show that slide
+        this.currentSlideIndex = slideIndex;
+        document.getElementById("slide" + this.currentSlideIndex.toString()).style.display = "block";
+    }
 
-    // showNextPhoto() {
-    //     showPhoto(this.currentPhotoId + 1);
-    // }
+    showNextPhoto() {
+        // if we're on the last slide and user clicks to go to next, circle back to first photo
+        if (this.currentSlideIndex === this.lastSlideIndex) {
+            this.showPhoto(0);
+        } else {
+            this.showPhoto(this.currentSlideIndex + 1);
+        }
+    }
 
-    // showLastPhoto() {
-    //     showPhoto(this.currentPhotoId - 1);
-    // }
+    showLastPhoto() {
+        // if we're on the first slide and user clicks to go back, circle back to last photo
+        if (this.currentSlideIndex === 0) {
+            this.showPhoto(this.lastSlideIndex);
+        } else {
+            this.showPhoto(this.currentSlideIndex - 1);
+        }
+    }
 
-    // checkTotalPhotos() {
-
-    // }
+    getLastSlideIndex() {
+        var slides = document.getElementsByClassName("slide");
+        return slides.length - 1;
+    }
 
 }
 

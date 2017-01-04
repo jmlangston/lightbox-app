@@ -52,6 +52,7 @@
 .slide p {
     position: relative;
     top: 60px;
+    color: white;
 }
 
 #closeButton {
