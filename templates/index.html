@@ -4,28 +4,36 @@
     <title>Lightbox App</title>
     <link rel="stylesheet" type="text/css" href="static/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
 </head>
 <body>
+    <div id="header">
+        <h1>Image Gallery</h1>
+        <p>Click a thumbnail to view the image</p>
+    </div>
     <div id="thumbnailsContainer">
         {% for photo in photos %}
-        <div class="thumbnail clickable" id="thumbnail{{ photo.photo_id }}">
-            <img src="{{ photo.url_thumbnail }}">
+        <div class="thumbnailDiv" id="thumbnail{{ photo.photo_id }}">
+            <img class="thumbnailImg clickable" src="{{ photo.url_thumbnail }}">
         </div>
         {% endfor %}
     </div>
 
     <div id="modal">
-        <div id="closeButton"><i class="fa fa-times clickable"></i></div>
-        <div id="slideContainer">
-            {% for photo in photos %}
-            <div class="slide" id="slide{{ photo.photo_id }}">
-                <img src="{{ photo.url_fullsize }}">
-                <p>{{ photo.title }}</p>
+        <div id="modalContent">
+            <div id="closeButton" class="clickable smallText">CLOSE</div>
+            <div id="slideContainer">
+                {% for photo in photos %}
+                <div class="slide" id="slide{{ photo.photo_id }}">
+                    <img src="{{ photo.url_fullsize }}">
+                    <p id="slideTitle">{{ photo.title }}</p>
+                    <p class="smallText">{{ photo.photo_id + 1 }} of {{ numPhotos }}</p>
+                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+            <div class="arrow" id="leftArrow"><i class="fa fa-long-arrow-left clickable"></i></div>
+            <div class="arrow" id="rightArrow"><i class="fa fa-long-arrow-right clickable"></i></div>
         </div>
-        <div class="arrow" id="leftArrow"><i class="fa fa-arrow-left clickable"></i></div>
-        <div class="arrow" id="rightArrow"><i class="fa fa-arrow-right clickable"></i></div>
     </div>
 
     <script src="static/index.js" type="text/javascript"></script>

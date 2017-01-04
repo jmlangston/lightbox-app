@@ -1,41 +1,76 @@
-.thumbnail {
-    display: inline-block;
-    height: 150px;
-    width: 150px;
-}
+/*
+ * General elements
+ */
 
-.thumbnail img {
-    display: block;
-    margin: auto; /* horizontally centers the img in the div */
+body {
+   font-family: "Source Sans Pro", Arial, sans-serif;
 }
-
-/*.thumbnail:hover {
-}
-.thumbnail:active {
-}*/
 
 .clickable {
     cursor: pointer;
 }
 
+
+/*
+ * Thumbnail view elements
+ */
+
+#header {
+    margin: 20px 0px;
+    text-align: center;
+}
+
+#header h1 {
+    margin-bottom: 15px;
+}
+
+#thumbnailsContainer {
+    padding-top: 35px;
+}
+
+.thumbnailDiv {
+    display: inline-block;
+    height: 150px;
+    width: 150px;
+}
+
+.thumbnailImg {
+    display: block;
+    margin: auto; /* horizontally centers the img in the div */
+    padding: 10px 0px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0); /* invisible placeholder for hover border so elements don't shift */
+}
+
+.thumbnailImg:hover {
+    border-bottom: 2px solid rgb(117, 26, 255);
+}
+
+
+/*
+ * Modal view elements
+ */
+
 #modal {
     display: none;
-    background-color: rgba(0, 0, 0, 0.6);
     height: 100%;
     width: 100%;
     position: fixed;
     top: 0;
     left: 0;
-    /*index: 1;  */
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+#modalContent {
+    position: relative;
+    width: 600px; /* widest image is 500px, plus space for arrow icons */
+    margin: auto;
+    color: gray;
 }
 
 #slideContainer {
-    background-color: rgba(0, 0, 0, 0.9);
     position: relative;
+    top: 40px;
     margin: auto;
-    height: 80%;
-    width: 80%;
-    top: 10%;
 }
 
 .slide {
@@ -45,47 +80,41 @@
 .slide img {
     display: block;
     margin: auto;
-    position: relative;
-    top: 40px;
 }
 
 .slide p {
-    position: relative;
-    top: 60px;
+    margin-bottom: 0px;
+    text-align: center;
+}
+
+#slideTitle {
     color: white;
+}
+
+.smallText {
+    font-size: 12px;
 }
 
 #closeButton {
     position: absolute;
     top: 20px;
-    right: 20px;
-    font-size: 48px;
+    right: 0px;
 }
 
-#closeButton:hover {
-    color: red;
+.arrow:hover, #closeButton:hover {
+    color: rgb(117, 26, 255);
 }
-
-/*#closeButton:active {
-}*/
 
 .arrow {
     position: absolute;
-    top: 50%;
-    font-size: 48px;
+    top: 200px;
+    font-size: 24px;
 }
-
-.arrow:hover {
-    color: red;
-}
-
-/*.arrow:active {
-}*/
 
 #leftArrow {
-    left: 20px;
+    left: 0px;
 }
 
 #rightArrow {
-    right: 20px;
+    right: 0px;
 }
